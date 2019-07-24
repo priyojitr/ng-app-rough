@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserAuthenticationService } from 'src/app/service/authentication.service';
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -9,7 +10,7 @@ import { UserAuthenticationService } from 'src/app/service/authentication.servic
 })
 export class LoginComponent implements OnInit {
 
-  username = 'bootapp';
+  username = '';
   password = '';
   invalidLogin = false;
 
@@ -19,11 +20,13 @@ export class LoginComponent implements OnInit {
   }
 
   checkLogin(): void {
-    if (this.authService.authenticate(this.username, this.password)) {
-      this.router.navigate(['']);
-      this.invalidLogin = false;
-    } else {
-      this.invalidLogin = true;
-    }
+    this.authService.authenticate(this.username, this.password).subscribe(
+      data => {
+        this.router.navigate(['']);
+        this.invalidLogin = false;
+      }, error => {
+        this.invalidLogin = true;
+      }
+    );
   }
 }

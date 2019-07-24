@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { EmployeeComponent } from './employee/employee.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AddEmployeeComponent } from './add-employee/add-employee.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
@@ -15,6 +15,8 @@ import { HttpClientService } from './service/http-client.service';
 import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
 import { AuthGuardService } from './service/auth-guard.service';
+import { BasicAuthInterceptorService } from './service/basic-auth-interceptor.service';
+
 
 @NgModule({
   declarations: [
@@ -35,7 +37,10 @@ import { AuthGuardService } from './service/auth-guard.service';
   providers: [
     HttpClientService,
     UserAuthenticationService,
-    AuthGuardService
+    AuthGuardService,
+    {
+      provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptorService, multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })
